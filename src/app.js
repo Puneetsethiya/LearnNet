@@ -12,6 +12,10 @@ app.use(express.json());
 // serve frontend
 app.use(express.static(path.join(__dirname, "../public")));
 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/auth.html"));
+});
+
 // routes
 const coursesRouter = require('./routes/courses');
 const userRouter = require('./routes/user');
