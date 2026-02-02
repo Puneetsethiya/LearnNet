@@ -440,7 +440,7 @@ btn.previousElementSibling.appendChild(row);
 /* LOAD COURSES */
 
 async function loadCourses(){
-const res=await fetch("http://localhost:3000/admin/courses");
+const res=await fetch("/admin/courses");
 const courses=await res.json();
 
 courseTable.innerHTML="";
@@ -505,13 +505,13 @@ subCourses.push({name:sname,description:sdesc,parts:sparts});
 const payload={name,description,parts,subCourses};
 
 if(editId){
-await fetch(`http://localhost:3000/admin/courses/${editId}`,{
+await fetch(`/admin/courses/${editId}`,{
 method:"PUT",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify(payload)
 });
 }else{
-await fetch("http://localhost:3000/api/course",{
+await fetch("/api/course",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify(payload)
@@ -549,7 +549,7 @@ courseModal.style.display="flex";
 
 async function deleteCourse(id){
 if(!confirm("Delete course?")) return;
-await fetch(`http://localhost:3000/admin/courses/${id}`,{method:"DELETE"});
+await fetch(`/admin/courses/${id}`,{method:"DELETE"});
 loadCourses();
 }
 

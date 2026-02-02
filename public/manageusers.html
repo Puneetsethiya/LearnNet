@@ -237,7 +237,7 @@ async function loadUserData(){
 
 try{
 
-const res = await fetch("http://localhost:3000/admin/overview");
+const res = await fetch("/admin/overview");
 const data = await res.json();
 
 const table = document.getElementById("userTable");
@@ -284,7 +284,7 @@ alert("Failed to load users");
 async function unenrollUser(username, courseName){
 try{
 
-const res = await fetch("http://localhost:3000/admin/delete-enrollment",{
+const res = await fetch("/admin/delete-enrollment",{
 method:"DELETE",
 headers:{ "Content-Type":"application/json" },
 body:JSON.stringify({ username, courseName })

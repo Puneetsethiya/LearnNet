@@ -284,7 +284,7 @@ document.querySelector(".sidebar").classList.toggle("mobile-open");
 
 async function loadDashboardData(){
 try{
-const res = await fetch("http://localhost:3000/admin/overview");
+const res = await fetch("/admin/overview");
 if(!res.ok) throw new Error();
 
 const data = await res.json();

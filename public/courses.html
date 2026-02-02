@@ -415,7 +415,7 @@ let selectedCourse="";
 
 async function loadCourses(){
 
-const res=await fetch("http://localhost:3000/api/courses");
+const res=await fetch("/api/courses");
 allCourses=await res.json();
 
 slider.innerHTML="";
@@ -594,7 +594,7 @@ alert("Fill all fields");
 return;
 }
 
-const login=await fetch("http://localhost:3000/user/login",{
+const login=await fetch("/user/login",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({username,password})
@@ -609,7 +609,7 @@ return;
 
 localStorage.setItem("username",username);
 
-await fetch("http://localhost:3000/user/enroll",{
+await fetch("/user/enroll",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({username,courseName:selectedCourse})
@@ -633,7 +633,7 @@ async function fetchEnrollments(){
 const username=localStorage.getItem("username");
 if(!username) return;
 
-const res=await fetch(`http://localhost:3000/user/enrollments/${username}`);
+const res=await fetch(`/user/enrollments/${username}`);
 const data=await res.json();
 
 enrolled=new Set(data.courses||[]);
@@ -674,7 +674,7 @@ e.preventDefault();
 const username=localStorage.getItem("username");
 if(!username) return;
 
-const res=await fetch(`http://localhost:3000/user/enrollments/${username}`);
+const res=await fetch(`/user/enrollments/${username}`);
 const data=await res.json();
 
 const list=document.getElementById("myCoursesList");

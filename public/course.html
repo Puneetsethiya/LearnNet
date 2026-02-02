@@ -314,7 +314,7 @@ async function loadVideo(videoId,title,index){
 
   if(username){
     try{
-      const response=await fetch("http://localhost:3000/user/completion",{
+      const response=await fetch("/user/completion",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
@@ -345,7 +345,7 @@ async function loadCourse(){
   try{
 
     const res=await fetch(
-      "http://localhost:3000/api/course/" + encodeURIComponent(courseName)
+      "/api/course/" + encodeURIComponent(courseName)
     );
 
     const course=await res.json();
@@ -367,7 +367,7 @@ async function loadCourse(){
     if(username){
       try{
         const completionRes=await fetch(
-          `http://localhost:3000/user/completion/${username}/${courseName}`
+          `/user/completion/${username}/${courseName}`
         );
         const completionData=await completionRes.json();
         completed=completionData.completed || [];

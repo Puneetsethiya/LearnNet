@@ -285,7 +285,7 @@ hamburger.onclick = () => {
 async function loadCourses(){
 
 try{
-const res = await fetch(`http://localhost:3000/user/enrollments/${username}`);
+const res = await fetch(`/user/enrollments/${username}`);
 const data = await res.json();
 
 const list = document.getElementById("coursesList");
@@ -330,7 +330,7 @@ async function removeCourse(course, element){
 if(!confirm(`Unregister from ${course}?`)) return;
 
 await fetch(
-`http://localhost:3000/user/enrollments/${username}/${encodeURIComponent(course)}`,
+`/user/enrollments/${username}/${encodeURIComponent(course)}`,
 { method:"DELETE" }
 );
 
@@ -364,7 +364,7 @@ if(currentPass === newPass){
 
 try{
 
-  const res = await fetch("http://localhost:3000/user/reset-password",{
+  const res = await fetch("/user/reset-password",{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body:JSON.stringify({
