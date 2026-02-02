@@ -1,0 +1,153 @@
+/* =========================================================
+   Global overflow fix (prevents sideways scrolling)
+========================================================= */
+
+html, body{
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* =========================================================
+   Mobile / small-screen tweaks - preserves desktop UI
+========================================================= */
+
+@media (max-width: 900px) {
+
+  /* make main containers full width */
+  .content, 
+  .dashboard-content, 
+  .course-section, 
+  .container, 
+  .profile-container {
+    margin-left: 0 !important;
+    padding: 16px !important;
+    max-width: 100% !important;
+  }
+
+  /* collapse sidebar to top area */
+ .sidebar{
+  position: static !important;
+  width: 100% !important;
+  height: auto !important;
+  padding: 12px !important;
+  display: none !important;   /* hide by default on mobile */
+}
+
+.sidebar.mobile-open{
+  display: block !important; /* show when hamburger toggled */
+}
+
+
+  /* navbar tweaks */
+  .navbar{
+    padding: 12px !important;
+    flex-wrap: wrap;
+  }
+
+  /* ===========================
+     HAMBURGER MENU SUPPORT
+  ============================ */
+
+  .hamburger{
+    display: block !important;
+    font-size: 28px;
+    cursor: pointer;
+  }
+
+  .nav-links{
+    display: none !important;
+    width: 100%;
+  }
+
+  .nav-links.mobile-active{
+    display: flex !important;
+    flex-direction: column;
+    background:#0a2a66;
+    width:100%;
+    margin-top:10px;
+  }
+
+  .nav-links.mobile-active a{
+    padding:12px 0;
+    text-align:center;
+    margin:0 !important;
+    border-top:1px solid rgba(255,255,255,.15);
+  }
+
+  /* ===========================
+     Course slider tweaks
+  ============================ */
+
+  .slider-container, 
+  .programming-container{
+    gap:12px !important;
+  }
+
+  .course-box{
+    flex:0 0 200px !important;
+    height: auto !important;
+  }
+
+  /* responsive iframe */
+  iframe{
+    height: 260px !important;
+    max-width:100%;
+  }
+  
+
+  /* course page: move left fixed nav to top */
+  .navbar{
+    width:100% !important; 
+    height: auto !important;
+  }
+
+  .navbar .navbar-text{
+    writing-mode:unset !important; 
+    transform:none !important;
+  }
+
+  .course-container{
+    margin-left:0 !important; 
+    flex-direction:column !important
+  }
+
+  /* smaller modals padding */
+  .modal-content, 
+  .modal-card{
+    width:95% !important; 
+    padding:16px !important
+  }
+
+  /* floating add button spacing */
+  .add-floating{
+    right:16px !important; 
+    bottom:16px !important
+  }
+}
+
+/* =========================================================
+   Extra small screens
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .course-box{
+    flex:0 0 160px !important;
+  }
+
+  iframe{
+    height:200px !important;
+  }
+
+  .course-title{
+    font-size:1.05rem !important;
+  }
+
+  .slider-wrapper{
+    padding:20px 6px !important;
+  }
+
+  .navbar{
+    padding:10px !important;
+  }
+}

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<style>
+
+html,body{
+height:100%;
+margin:0;
+overflow:hidden;
+background:transparent !important;
+}
+
+#botPopup{
+width:100%;
+height:100%;
+}
+
+.botBox{
+width:100%;
+height:100%;
+
+background:#1c1c2b;
+color:white;
+padding:18px;
+border-radius:18px;
+box-shadow:0 12px 30px rgba(0,0,0,.4);
+
+display:flex;
+flex-direction:column;
+box-sizing:border-box;
+}
+
+.light .botBox{
+background:white;
+color:black;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px;
+}
+
+.label{
+font-weight:bold;
+margin-bottom:8px;
+}
+
+.courses{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-bottom:12px;
+}
+
+.courses button{
+flex:1;
+padding:10px;
+background:#6a00f4;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+}
+
+#quizArea{
+display:none;
+flex:1;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+.progress{
+width:100%;
+height:10px;
+background:#444;
+border-radius:10px;
+overflow:hidden;
+margin-bottom:12px;
+}
+
+#bar{
+height:100%;
+width:0%;
+background:#6a00f4;
+transition:.3s;
+}
+
+#question{
+font-size:20px;
+font-weight:bold;
+margin:12px 0;
+}
+
+#timer{
+font-size:18px;
+font-weight:bold;
+margin-bottom:10px;
+color:#ffcc00;
+}
+
+#answer{
+display:none;
+font-size:18px;
+font-weight:bold;
+color:#00ffb3;
+margin:12px 0;
+}
+
+.controls{
+margin-top:auto;
+width:100%;
+display:flex;
+justify-content:center;
+}
+
+.controls button{
+padding:10px 18px;
+background:#6a00f4;
+color:white;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:15px;
+}
+
+.controls button:disabled{
+opacity:.5;
+cursor:not-allowed;
+}
+
+#toast{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#6a00f4;
+color:white;
+padding:14px 24px;
+border-radius:12px;
+display:none;
+z-index:9999;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="botPopup">
+<div class="botBox">
+
+<div class="top">
+<h3>Quiz Bot</h3>
+<div>
+<button onclick="toggleTheme()">🌙</button>
+<button onclick="closeBot()">✖</button>
+</div>
+</div>
+
+<p class="label">Select Course</p>
+
+<div class="courses">
+<button onclick="startQuiz('DSA')">DSA</button>
+<button onclick="startQuiz('ML')">ML</button>
+<button onclick="startQuiz('AI')">AI</button>
+<button onclick="startQuiz('CN')">CN</button>
+<button onclick="startQuiz('OS')">OS</button>
+</div>
+
+<div id="quizArea">
+
+<div class="progress">
+<div id="bar"></div>
+</div>
+
+<div id="question"></div>
+<div id="timer"></div>
+<div id="answer"></div>
+
+<div class="controls">
+<button id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+function closeBot(){
+ parent.document.querySelector("#chatbot-popup").style.display="none";
+}
+
+if(localStorage.getItem("quizTheme")==="light"){
+ document.body.classList.add("light");
+}
+
+const data = {
+
+DSA:[
+{q:"What is Stack?",a:"LIFO"},
+{q:"Binary search needs?",a:"Sorted array"},
+{q:"Queue follows?",a:"FIFO"},
+{q:"Recursion?",a:"Function calling itself"},
+{q:"Array stored in?",a:"Contiguous memory"}
+],
+
+ML:[
+{q:"ML stands for?",a:"Machine Learning"},
+{q:"Supervised uses?",a:"Labeled data"},
+{q:"Overfitting?",a:"Poor generalization"},
+{q:"Regression?",a:"Continuous output"},
+{q:"Classification?",a:"Categories"}
+],
+
+AI:[
+{q:"AI means?",a:"Artificial Intelligence"},
+{q:"Neural nets inspired by?",a:"Brain"},
+{q:"NLP?",a:"Natural Language Processing"},
+{q:"Deep learning?",a:"Many layers"},
+{q:"CV?",a:"Images"}
+],
+
+CN:[
+{q:"OSI layers?",a:"7"},
+{q:"IP?",a:"Internet Protocol"},
+{q:"TCP?",a:"Connection oriented"},
+{q:"UDP?",a:"Connectionless"},
+{q:"Router layer?",a:"Network"}
+],
+
+OS:[
+{q:"OS manages?",a:"Resources"},
+{q:"Process?",a:"Running program"},
+{q:"Deadlock?",a:"Circular wait"},
+{q:"Scheduling?",a:"CPU time"},
+{q:"Paging?",a:"Memory management"}
+]
+
+};
+
+let course="";
+let i=0;
+let time=5;
+let timerInterval;
+
+const nextBtn=document.getElementById("nextBtn");
+
+function startQuiz(c){
+course=c;
+i=0;
+document.getElementById("quizArea").style.display="flex";
+loadQ();
+}
+
+function loadQ(){
+
+clearInterval(timerInterval);
+
+let q=data[course][i];
+
+document.getElementById("question").innerText=`Q${i+1}: ${q.q}`;
+document.getElementById("answer").innerText=q.a;
+document.getElementById("answer").style.display="none";
+
+nextBtn.disabled=true;
+
+time=5;
+
+const timerEl=document.getElementById("timer");
+timerEl.style.display="block";
+timerEl.innerText="⏳ "+time;
+
+timerInterval=setInterval(()=>{
+
+time--;
+timerEl.innerText="⏳ "+time;
+
+if(time<=0){
+clearInterval(timerInterval);
+timerEl.style.display="none";
+showAnswer();
+}
+
+},1000);
+
+updateBar();
+}
+
+function showAnswer(){
+document.getElementById("answer").style.display="block";
+nextBtn.disabled=false;
+}
+
+function nextQuestion(){
+
+i++;
+
+if(i>=5){
+showToast();
+document.getElementById("quizArea").style.display="none";
+return;
+}
+
+loadQ();
+}
+
+function updateBar(){
+document.getElementById("bar").style.width=(i/5)*100+"%";
+}
+
+function showToast(){
+const t=document.getElementById("toast");
+t.innerHTML="Congratulations!<br>Quiz Completed!";
+t.style.display="block";
+setTimeout(()=>t.style.display="none",3000);
+}
+
+function toggleTheme(){
+document.body.classList.toggle("light");
+localStorage.setItem(
+ "quizTheme",
+ document.body.classList.contains("light")?"light":"dark"
+);
+}
+
+</script>
+
+</body>
+</html>

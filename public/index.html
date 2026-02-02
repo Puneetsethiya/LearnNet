@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LearnNet | Home</title>
+
+<link rel="stylesheet" href="responsive.css">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+
+
+background:
+radial-gradient(circle at 15% 20%, #c9d6ff, transparent 45%),
+radial-gradient(circle at 85% 80%, #e6d3ff, transparent 45%),
+linear-gradient(135deg, #eef2ff, #ffffff);
+min-height:100vh;
+color:#333;
+}
+
+/* NAVBAR */
+
+.navbar{
+background:#0a2a66;
+color:white;
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.nav-title{
+font-size:2rem;
+font-weight:bold;
+}
+
+.nav-links a{
+color:white;
+margin-left:20px;
+text-decoration:none;
+font-size:1rem;
+}
+
+.nav-links a:hover{
+text-decoration:underline;
+}
+
+/* MAIN */
+
+.container{
+text-align:center;
+margin-top:120px;
+padding:20px;
+}
+
+.container h2{
+font-size:2.6rem;
+color:#0a2a66;
+margin-bottom:10px;
+}
+
+.container p{
+font-size:1.2rem;
+color:#555;
+margin-bottom:40px;
+}
+
+/* BUTTONS */
+
+.links-container{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+}
+
+.link-item{
+text-decoration:none;
+font-size:1.1rem;
+padding:14px 28px;
+background:#0a2a66;
+color:white;
+border-radius:10px;
+transition:.3s;
+box-shadow:0 6px 15px rgba(0,0,0,.15);
+}
+
+.link-item:hover{
+background:#083e99;
+transform:translateY(-3px);
+}
+
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+<div class="nav-title">LearnNet</div>
+
+</nav>
+
+<div class="container">
+<h2>Welcome to LearnNet 🚀</h2>
+<p>Explore courses, manage your profile, and boost your skills.</p>
+
+<div class="links-container">
+<a href="courses.html" class="link-item">Browse Courses</a>
+<a href="profilepage.html" class="link-item">My Profile</a>
+<a href="auth.html" class="link-item">Logout</a>
+</div>
+</div>
+
+<script src="chatbot-inject.js"></script>
+
+</body>
+</html>

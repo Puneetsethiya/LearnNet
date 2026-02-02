@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LearnNet | Login & Signup</title>
+
+<style>
+
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+/* BACKGROUND */
+body{
+font-family:'Segoe UI',sans-serif;
+background:
+radial-gradient(circle at 15% 20%, #c9d6ff, transparent 45%),
+radial-gradient(circle at 85% 80%, #e6d3ff, transparent 45%),
+linear-gradient(135deg, #eef2ff, #ffffff);
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+/* NAVBAR */
+.navbar{
+background:#0a2a66;
+color:white;
+padding:20px;
+width:100%;
+}
+
+.nav-title{
+font-size:2rem;
+font-weight:bold;
+}
+
+/* CARD */
+.container{
+margin-top:90px;
+width:360px;
+/* background:rgba(255,255,255,0.85); */
+backdrop-filter:blur(8px);
+border-radius:20px;
+padding:50px 40px;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.12);
+
+border:1px solid rgba(255,255,255,.6);
+
+text-align:center;
+}
+
+/* TITLE */
+h2{
+margin-bottom:20px;
+color:#0a2a66;
+}
+
+/* INPUTS */
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:10px;
+border:1px solid #d6d6f0;
+font-size:15px;
+background:#f7f9ff;
+}
+
+input:focus{
+outline:none;
+border-color:#6a7bff;
+background:white;
+}
+
+/* BUTTON */
+button{
+width:100%;
+padding:12px;
+margin-top:8px;
+border:none;
+border-radius:10px;
+background:#0a2a66;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:.25s;
+}
+
+button:hover{
+opacity:.9;
+}
+
+/* DROPDOWN */
+#role{
+width:45%;
+padding:12px;
+margin-bottom:18px;
+border-radius:12px;
+border:1px solid #a3a4b0;
+font-size:15px;
+cursor:pointer;
+background:
+radial-gradient(circle at 15% 20%, #c9d6ffc8, transparent 45%),
+radial-gradient(circle at 85% 80%, #e4d4f8bd, transparent 45%),
+linear-gradient(135deg, #eef2ff, #ffffff);
+box-shadow:0 6px 14px rgba(172, 176, 208, 0.47);
+transition:.25s ease;
+}
+
+#role option{
+background:white;
+color:#333;
+padding:10px;
+}
+
+#role:hover{
+transform:translateY(-1px);
+box-shadow:0 8px 18px rgba(106,123,255,.35);
+}
+
+#role:focus{
+outline:none;
+border-color:#6a7bff;
+box-shadow:0 0 0 2px rgba(106,123,255,.25);
+}
+
+/* LINKS */
+#toggleForm{
+margin-top:12px;
+font-size:14px;
+color:#555;
+}
+
+#toggleForm span,
+.forgot-password span{
+color:#0a2a66;
+cursor:pointer;
+font-weight:500;
+}
+
+.forgot-password{
+margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+<div class="nav-title">LearnNet</div>
+</nav>
+
+<div class="container">
+
+<h2 id="formTitle">Login</h2>
+
+<select id="role" onchange="toggleForm()">
+<option value="user">User</option>
+<option value="admin">Admin</option>
+</select>
+
+<form id="authForm">
+
+<input type="text" id="username" placeholder="Username" required>
+<input type="password" id="password" placeholder="Password" required>
+
+<button type="submit">Submit</button>
+
+<p id="toggleForm">
+Don't have an account? <span onclick="toggleForm()">Signup</span>
+</p>
+
+<p class="forgot-password">
+<span onclick="showForgotPasswordForm()">Forgot Password?</span>
+</p>
+
+</form>
+
+<form id="forgotPasswordForm" style="display:none;">
+
+<input type="text" id="forgotUsername" placeholder="Enter username" required>
+<input type="password" id="newPassword" placeholder="New password" required>
+
+<button type="button" onclick="resetPassword()">Reset Password</button>
+
+<p class="forgot-password">
+<span onclick="hideForgotPasswordForm()">Back to Login</span>
+</p>
+
+</form>
+
+</div>
+<script>document.getElementById("forgotPasswordForm").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();  
+    resetPassword();     
+  }
+});
+</script>
+
+<script src="script.js"></script>
+
+</body>
+</html>

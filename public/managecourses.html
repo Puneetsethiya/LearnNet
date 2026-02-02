@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Courses | LearnNet</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style>
+:root{
+--bg:#f1f5f9;
+--primary:#2d3748;
+--accent:#6b46c1;
+--hover:#805ad5;
+--shadow:rgba(0,0,0,.15);
+}
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:var(--bg);
+color:#2d3748;
+}
+
+/* ================= DESKTOP ORIGINAL ================= */
+
+.navbar{
+background:var(--primary);
+color:white;
+padding:16px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:1.3em;
+position:fixed;
+top:0;
+width:100%;
+z-index:1000;
+}
+
+.nav-title{
+font-size:1.8em;
+font-weight:bold;
+white-space:nowrap;
+}
+
+.sidebar{
+position:fixed;
+top:80px;
+left:0;
+width:250px;
+height:calc(100% - 80px);
+background:var(--primary);
+padding:20px 0;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.sidebar a{
+color:white;
+text-decoration:none;
+padding:12px 20px;
+font-size:1.1em;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.sidebar a:hover{
+background:var(--hover);
+}
+
+/* CONTENT */
+
+.content{
+margin-left:270px;
+padding:110px 30px 40px;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 10px 25px var(--shadow);
+}
+
+th,td{
+padding:14px;
+border-bottom:1px solid #e0e7ff;
+text-align:center;
+}
+
+th{
+background:var(--accent);
+color:white;
+}
+
+.action-btn{
+padding:7px 14px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+color:white;
+}
+
+.edit-btn{background:#3498db;}
+.delete-btn{background:#e74c3c;}
+
+/* FLOATING ADD */
+
+.add-floating{
+position:fixed;
+bottom:25px;
+right:40px;
+width:64px;
+height:64px;
+border-radius:50%;
+background:var(--accent);
+color:white;
+border:none;
+font-size:25px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 12px 28px rgba(0,0,0,.3);
+}
+
+/* MODAL */
+
+.modal{
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+justify-content:center;
+align-items:center;
+z-index:4000;
+}
+
+.modal-card{
+background:white;
+padding:28px;
+border-radius:18px;
+width:650px;
+max-height:85vh;
+overflow:auto;
+box-shadow:0 18px 45px rgba(0,0,0,.35);
+position:relative;
+}
+
+.close-btn{
+position:absolute;
+top:16px;
+right:18px;
+font-size:22px;
+cursor:pointer;
+}
+
+/* FORMS */
+
+.form-group{
+margin-bottom:14px;
+}
+
+.form-group input{
+width:95%;
+padding:11px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+.parts-container{
+margin-top:18px;
+}
+
+.part-row{
+display:flex;
+gap:10px;
+margin-bottom:10px;
+}
+
+.part-row input{
+flex:1;
+}
+
+.btn{
+background:var(--accent);
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:7px;
+cursor:pointer;
+}
+
+.delete-part{
+background:#e74c3c;
+border:none;
+color:white;
+padding:8px 12px;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* ================= HAMBURGER ================= */
+
+.hamburger{
+display:none;
+cursor:pointer;
+}
+
+/* ================= MOBILE ONLY ================= */
+
+@media(max-width:900px){
+
+/* navbar fix */
+.navbar{
+  padding:12px 14px;
+  justify-content:space-between;
+}
+
+/* smaller title so hamburger fits */
+.nav-title{
+  font-size:0.85em;
+  max-width:70%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+/* FORCE hamburger visible */
+.hamburger{
+  display:block !important;
+  font-size:26px;
+  color:white;
+    margin-right:25px; 
+}
+
+/* slide sidebar */
+.sidebar{
+  left:-260px;
+  transition:.3s ease;
+  top:50px;
+}
+
+.sidebar.mobile-open{
+  left:0;
+}
+
+/* full width content */
+.content{
+margin-left:0 !important;
+padding:110px 10px 30px;
+}
+
+/* table scroll */
+.table-wrapper{
+overflow-x:auto;
+}
+
+table{
+min-width:900px;
+}
+
+
+.modal{
+  align-items:flex-start;     
+  padding-top:40px;
+}
+
+.modal-card{
+  width:90%;
+  max-height:90vh;
+  padding:18px;
+  border-radius:14px;
+}
+.add-floating{
+  bottom:16px;
+  right:16px;
+  width:56px;
+  height:56px;
+  font-size:22px;
+}
+h3{
+  margin-bottom: 10px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+<div class="nav-title">
+<i class="fas fa-chalkboard-teacher"></i> LearnNet Admin Dashboard
+</div>
+
+<div class="hamburger" onclick="toggleSidebar()">☰</div>
+
+</nav>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<a href="admindashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+<a href="manageusers.html"><i class="fas fa-users-cog"></i> Manage Users</a>
+<a href="managecourses.html"><i class="fas fa-book"></i> Manage Courses</a>
+<a href="index.html" id="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<h1>Courses</h1>
+
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Description</th>
+<th>Sub Courses</th>
+<th>Lessons</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="courseTable"></tbody>
+</table>
+</div>
+
+</div>
+
+<div class="add-floating" onclick="openModal()">
+<i class="fas fa-plus"></i>
+</div>
+
+<!-- MODAL -->
+
+<div class="modal" id="courseModal">
+<div class="modal-card">
+
+<span class="close-btn" onclick="closeModal()">✖</span>
+
+<h2 id="modalTitle">Add Course</h2>
+
+<div class="form-group">
+<input id="courseName" placeholder="Course Name">
+</div>
+
+<div class="form-group">
+<input id="courseDescription" placeholder="Description">
+</div>
+
+<h3>Main Course Lessons</h3>
+<div class="parts-container" id="mainParts"></div>
+<button class="btn" onclick="addMainPart()">➕ Add Lesson</button>
+
+<h3 style="margin-top:20px;">Sub Courses</h3>
+<div id="subCourses"></div>
+
+<button class="btn" onclick="addSubCourse()">➕ Add Sub Course</button>
+
+<br><br>
+<button class="btn" onclick="saveCourse()">Save</button>
+
+</div>
+</div>
+
+<script>
+
+/* MOBILE SIDEBAR */
+
+function toggleSidebar(){
+document.querySelector(".sidebar").classList.toggle("mobile-open");
+}
+
+let editId=null;
+
+/* PARTS */
+
+function addMainPart(title="",link=""){
+const row=document.createElement("div");
+row.className="part-row";
+row.innerHTML=`
+<input class="ptitle" placeholder="Lesson Title" value="${title}">
+<input class="plink" placeholder="YouTube link" value="${link}">
+<button class="delete-part" onclick="this.parentElement.remove()">❌</button>
+`;
+mainParts.appendChild(row);
+}
+
+function addSubCourse(name="",desc="",parts=[]){
+const box=document.createElement("div");
+box.style.marginTop="15px";
+
+box.innerHTML=`
+<div class="form-group">
+<input class="sname" placeholder="Sub Course Name" value="${name}">
+</div>
+
+<div class="form-group">
+<input class="sdesc" placeholder="Description" value="${desc}">
+</div>
+
+<div class="parts-container"></div>
+
+<button class="btn" onclick="addSubPart(this)">➕ Add Lesson</button>
+<button class="delete-part" onclick="this.parentElement.remove()">❌ Remove Sub Course</button>
+`;
+
+subCourses.appendChild(box);
+
+parts.forEach(p=>{
+addSubPart(box.querySelector(".btn"),p.title,p.youtubeId);
+});
+}
+
+function addSubPart(btn,title="",link=""){
+const row=document.createElement("div");
+row.className="part-row";
+row.innerHTML=`
+<input class="ptitle" placeholder="Lesson Title" value="${title}">
+<input class="plink" placeholder="YouTube link" value="${link}">
+<button class="delete-part" onclick="this.parentElement.remove()">❌</button>
+`;
+btn.previousElementSibling.appendChild(row);
+}
+
+/* LOAD COURSES */
+
+async function loadCourses(){
+const res=await fetch("http://localhost:3000/admin/courses");
+const courses=await res.json();
+
+courseTable.innerHTML="";
+
+courses.forEach((c,i)=>{
+courseTable.innerHTML+=`
+<tr>
+<td>${i+1}</td>
+<td>${c.name}</td>
+<td>${c.description}</td>
+<td>${c.subCourses.length}</td>
+<td>${c.parts.length}</td>
+<td>
+<button class="action-btn edit-btn" onclick='editCourse(${JSON.stringify(c)})'>Edit</button>
+<button class="action-btn delete-btn" onclick="deleteCourse('${c._id}')">Delete</button>
+</td>
+</tr>
+`;
+});
+}
+
+/* SAVE */
+
+async function saveCourse(){
+
+const name=courseName.value.trim();
+const description=courseDescription.value.trim();
+
+if(!name||!description){
+alert("Fill fields");return;
+}
+
+const parts=[];
+document.querySelectorAll("#mainParts .part-row").forEach((r,i)=>{
+let t=r.querySelector(".ptitle").value.trim();
+let l=r.querySelector(".plink").value.trim();
+if(!t||!l) return;
+parts.push({title:`${i+1}. ${t}`,youtubeId:l});
+});
+
+const subCourses=[];
+
+document.querySelectorAll("#subCourses > div").forEach(box=>{
+
+const sname=box.querySelector(".sname").value.trim();
+const sdesc=box.querySelector(".sdesc").value.trim();
+if(!sname) return;
+
+const sparts=[];
+
+box.querySelectorAll(".parts-container .part-row").forEach((r,i)=>{
+let t=r.querySelector(".ptitle").value.trim();
+let l=r.querySelector(".plink").value.trim();
+if(!t||!l) return;
+sparts.push({title:`${i+1}. ${t}`,youtubeId:l});
+});
+
+subCourses.push({name:sname,description:sdesc,parts:sparts});
+
+});
+
+const payload={name,description,parts,subCourses};
+
+if(editId){
+await fetch(`http://localhost:3000/admin/courses/${editId}`,{
+method:"PUT",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(payload)
+});
+}else{
+await fetch("http://localhost:3000/api/course",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(payload)
+});
+}
+
+closeModal();
+loadCourses();
+}
+
+/* EDIT */
+
+function editCourse(course){
+
+editId=course._id;
+
+courseName.value=course.name;
+courseDescription.value=course.description;
+
+mainParts.innerHTML="";
+subCourses.innerHTML="";
+
+course.parts.forEach(p=>{
+addMainPart(p.title.replace(/^\d+\.\s*/,""),p.youtubeId);
+});
+
+course.subCourses.forEach(sc=>{
+addSubCourse(sc.name,sc.description,sc.parts);
+});
+
+courseModal.style.display="flex";
+}
+
+/* DELETE */
+
+async function deleteCourse(id){
+if(!confirm("Delete course?")) return;
+await fetch(`http://localhost:3000/admin/courses/${id}`,{method:"DELETE"});
+loadCourses();
+}
+
+/* MODAL */
+
+function openModal(){
+editId=null;
+courseName.value="";
+courseDescription.value="";
+mainParts.innerHTML="";
+subCourses.innerHTML="";
+courseModal.style.display="flex";
+}
+
+function closeModal(){
+courseModal.style.display="none";
+}
+
+/* LOGOUT */
+
+logout.onclick=e=>{
+e.preventDefault();
+location.href="auth.html";
+};
+
+loadCourses();
+
+</script>
+
+</body>
+</html>

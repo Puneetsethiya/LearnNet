@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LearnNet | Profile</title>
+
+<link rel="stylesheet" href="responsive.css">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:
+radial-gradient(circle at 15% 20%, #c9d6ff, transparent 45%),
+radial-gradient(circle at 85% 80%, #e6d3ff, transparent 45%),
+linear-gradient(135deg, #eef2ff, #ffffff);
+min-height:100vh;
+color:#333;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+background:#0a2a66;
+color:white;
+padding:20px;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+position:relative;
+width:100%;
+box-sizing:border-box;
+}
+
+.nav-title{
+font-size:2rem;
+font-weight:bold;
+}
+
+.nav-links{
+display:flex;
+align-items:center;
+}
+
+.nav-links a{
+color:white;
+margin-left:20px;
+text-decoration:none;
+font-size:1rem;
+}
+
+.nav-links a:hover{
+text-decoration:underline;
+}
+
+/* HAMBURGER */
+
+.hamburger{
+display:none;
+font-size:28px;
+cursor:pointer;
+color:white;
+margin-left:auto;
+}
+
+/* MOBILE MENU */
+
+@media (max-width:900px){
+
+  .hamburger{
+    display:block;
+  }
+
+  .nav-links{
+    display:none;
+    width:100%;
+    flex-direction:column;
+    background:#0a2a66;
+    margin-top:12px;
+  }
+
+  .nav-links.mobile-active{
+    display:flex;
+  }
+
+  .nav-links a{
+    padding:12px 0;
+    text-align:center;
+    margin:0;
+    border-top:1px solid rgba(255,255,255,.2);
+  }
+}
+
+/* ================= PROFILE ================= */
+
+.profile-container{
+max-width:800px;
+margin:70px auto;
+background:white;
+padding:45px;
+border-radius:14px;
+box-shadow:0 10px 25px rgba(0,0,0,0.12);
+}
+
+.profile-container h2{
+text-align:center;
+color:#0a2a66;
+font-size:2.3rem;
+margin-bottom:35px;
+}
+
+/* USER ROW */
+
+.user-row{
+background:#f4f6ff;
+padding:16px 20px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+margin-bottom:25px;
+flex-wrap:wrap;
+}
+
+.username-box{
+font-size:1.2rem;
+font-weight:bold;
+color:#0a2a66;
+}
+
+/* BUTTON */
+
+.update-btn{
+background:#0a2a66;
+color:white;
+border:none;
+padding:10px 16px;
+border-radius:8px;
+cursor:pointer;
+transition:.3s;
+font-size:0.95rem;
+}
+
+.update-btn:hover{
+background:#083e99;
+}
+
+/* PASSWORD AREA */
+
+#passwordSection{
+display:none;
+margin-bottom:30px;
+}
+
+#passwordSection input{
+width:95%;
+padding:12px;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:1rem;
+margin-bottom:20px;
+}
+
+/* COURSES */
+
+.enrolled-courses h3{
+color:#0a2a66;
+margin-bottom:15px;
+font-size:1.5rem;
+}
+
+.enrolled-courses ul{
+list-style:none;
+padding:0;
+}
+
+.enrolled-courses li{
+background:#f4f6ff;
+margin:12px 0;
+padding:14px 18px;
+border-radius:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:1.1rem;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.enrolled-courses a{
+text-decoration:none;
+color:#333;
+}
+
+.enrolled-courses a:hover{
+color:#083e99;
+}
+
+/* UNREGISTER */
+
+.remove-btn{
+background:#e74c3c;
+color:white;
+border:none;
+padding:7px 12px;
+border-radius:8px;
+cursor:pointer;
+transition:.3s;
+}
+
+.remove-btn:hover{
+background:#c0392b;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+  <div class="nav-title">LearnNet</div>
+
+  <div class="hamburger" id="hamburgerBtn">☰</div>
+
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="#" id="logoutBtn">Logout</a>
+  </div>
+
+</nav>
+
+<!-- PROFILE -->
+
+<div class="profile-container">
+
+<h2>Your Profile</h2>
+
+<div class="user-row">
+  <div class="username-box">
+    Username: <span id="usernameDisplay"></span>
+  </div>
+
+  <button class="update-btn" onclick="togglePassword()">
+    Update Password
+  </button>
+</div>
+
+<div id="passwordSection">
+  <input type="password" id="currentPassword" placeholder="Enter current password">
+  <input type="password" id="newPassword" placeholder="Enter new password">
+  <button class="update-btn" onclick="savePassword()">Save Password</button>
+</div>
+
+<div class="enrolled-courses">
+<h3>Enrolled Courses</h3>
+<ul id="coursesList"></ul>
+</div>
+
+</div>
+
+<script>
+
+const username = localStorage.getItem("username");
+document.getElementById("usernameDisplay").innerText = username || "Guest";
+
+/* HAMBURGER */
+
+const hamburger = document.getElementById("hamburgerBtn");
+const navLinks = document.getElementById("navLinks");
+
+hamburger.onclick = () => {
+  navLinks.classList.toggle("mobile-active");
+};
+
+/* LOAD COURSES */
+
+async function loadCourses(){
+
+try{
+const res = await fetch(`http://localhost:3000/user/enrollments/${username}`);
+const data = await res.json();
+
+const list = document.getElementById("coursesList");
+list.innerHTML = "";
+
+if(!data.courses || data.courses.length === 0){
+  list.innerHTML = "<li>No courses enrolled yet.</li>";
+  return;
+}
+
+data.courses.forEach(course => {
+
+  const li = document.createElement("li");
+
+  const link = document.createElement("a");
+  link.innerText = course;
+  link.href = `course.html?name=${encodeURIComponent(course)}`;
+
+  const btn = document.createElement("button");
+  btn.innerText = "Unenroll";
+  btn.className = "remove-btn";
+
+  btn.onclick = () => removeCourse(course, li);
+
+  li.appendChild(link);
+  li.appendChild(btn);
+
+  list.appendChild(li);
+
+});
+
+}catch(err){
+alert("Failed to load courses");
+}
+
+}
+
+/* REMOVE COURSE */
+
+async function removeCourse(course, element){
+
+if(!confirm(`Unregister from ${course}?`)) return;
+
+await fetch(
+`http://localhost:3000/user/enrollments/${username}/${encodeURIComponent(course)}`,
+{ method:"DELETE" }
+);
+
+element.remove();
+
+}
+
+/* PASSWORD TOGGLE */
+
+function togglePassword(){
+const sec = document.getElementById("passwordSection");
+sec.style.display = sec.style.display === "block" ? "none" : "block";
+}
+
+/* SAVE PASSWORD */
+
+async function savePassword(){
+
+const currentPass = document.getElementById("currentPassword").value;
+const newPass = document.getElementById("newPassword").value;
+
+if(!currentPass || !newPass){
+  alert("Please fill both fields");
+  return;
+}
+
+if(currentPass === newPass){
+  alert("New password cannot be the same as current password!");
+  return;
+}
+
+try{
+
+  const res = await fetch("http://localhost:3000/user/reset-password",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      username,
+      currentPassword: currentPass,
+      newPassword: newPass
+    })
+  });
+
+  if(!res.ok){
+    alert("Current password is incorrect");
+    return;
+  }
+
+  alert("Password updated successfully! Please login again.");
+
+  localStorage.removeItem("username");
+  location.href = "auth.html";
+
+}catch(err){
+  alert("Something went wrong. Try again.");
+}
+
+}
+
+/* LOGOUT */
+
+document.getElementById("logoutBtn").onclick = e => {
+e.preventDefault();
+localStorage.removeItem("username");
+location.href = "auth.html";
+};
+
+loadCourses();
+
+</script>
+
+</body>
+</html>
