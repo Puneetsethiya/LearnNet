@@ -9,12 +9,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// serve frontend
-app.use(express.static(path.join(__dirname, "../public")));
-
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/auth.html"));
 });
+
+
+// serve frontend
+app.use(express.static(path.join(__dirname, "../public")));
+
 
 // routes
 const coursesRouter = require('./routes/courses');
