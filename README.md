@@ -1,8 +1,8 @@
-Title:
+Title:<br>
 LearnNet – Learning Management System
 
 
-Description:
+Description:<br>
 LearnNet is a full-stack web application built to manage courses, enrollments, and student progress using the MERN stack. The system supports role-based access and session-based authentication stored securely in MongoDB.
 
 
@@ -10,39 +10,39 @@ Live Demo:
 https://learnnet-web.onrender.com/
 
 
-Demo Credentials:
-Email: demo@user.com
-Password: demo123
+Demo Credentials:<br>
+Email: demo@user.com<br>
+Password: demo123<br>
 
 
-Features:
-• Role-based authentication (Admin / Student)
-• Course enrollment and tracking
-• Dashboard with progress management
-• Session-based authentication
-• REST API architecture
+Features:<br>
+• Role-based authentication (Admin / Student)<br>
+• Course enrollment and tracking<br>
+• Dashboard with progress management<br>
+• Session-based authentication<br>
+• REST API architecture<br>
 
 
-Tech Stack:
-MongoDB
-Express.js
-Node.js
-HTML
-CSS
-JavaScript
+Tech Stack:<br>
+MongoDB<br>
+Express.js<br>
+Node.js<br>
+HTML<br>
+CSS<br>
+JavaScript<br>
 
 Project Entry Point:
-src/script.js
+src/script.js<br>
 
-Run Locally:
-Clone repository
-Run npm install
-Start server using: node src/script.js
+Run Locally:<br>
+Clone repository<br>
+Run npm install<br>
+Start server using: node src/script.js<br>
 
-Future Improvements:
-• Assignment submission
-• Notifications
-• Analytics dashboard
+Future Improvements:<br>
+• Assignment submission<br>
+• Notifications<br>
+• Analytics dashboard<br>
 
-Author:
+Author:<br>
 Puneet Sethiya
